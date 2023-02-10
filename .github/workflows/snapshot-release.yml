@@ -18,23 +18,23 @@ jobs:
           distribution: adopt
           java-version: 11
 
-      # Using branch name for name of snapshot. Makes it easy to remember and can easily trigger new builds of Remote Habits. 
-      - name: Set snapshot version 
+      # Using branch name for name of snapshot. Makes it easy to remember and can easily trigger new builds of Remote Habits.
+      - name: Set snapshot version
         id: set-snapshot-version
-        # Get the current branch name and replace all / characters with - as / is invalid in gradle names. 
+        # Get the current branch name and replace all / characters with - as / is invalid in gradle names.
         run: echo "::set-output name=VERSION::$(echo '${{ github.event.pull_request.head.ref }}' | sed -r 's/\//-/g')-SNAPSHOT"
 
-      - name: Publish to MavenCentral
-        run: ./gradlew publishReleasePublicationToSonatypeRepository
-        env:
-          OSSRH_USERNAME: ${{ secrets.GRADLE_PUBLISH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.GRADLE_PUBLISH_PASSWORD }}
-          SIGNING_KEY_ID: ${{ secrets.GRADLE_SIGNING_KEYID }}
-          SIGNING_PASSWORD: ${{ secrets.GRADLE_SIGNING_PASSPHRASE }}
-          SIGNING_KEY: ${{ secrets.GRADLE_SIGNING_PRIVATE_KEY }}
-          SONATYPE_STAGING_PROFILE_ID: ${{ secrets.SONATYPE_STAGING_PROFILE_ID }}
-          MODULE_VERSION: ${{ steps.set-snapshot-version.outputs.VERSION }}
-          SNAPSHOT: true
+      # - name: Publish to MavenCentral
+      #   run: ./gradlew publishReleasePublicationToSonatypeRepository
+      #   env:
+      #     OSSRH_USERNAME: ${{ secrets.GRADLE_PUBLISH_USERNAME }}
+      #     OSSRH_PASSWORD: ${{ secrets.GRADLE_PUBLISH_PASSWORD }}
+      #     SIGNING_KEY_ID: ${{ secrets.GRADLE_SIGNING_KEYID }}
+      #     SIGNING_PASSWORD: ${{ secrets.GRADLE_SIGNING_PASSPHRASE }}
+      #     SIGNING_KEY: ${{ secrets.GRADLE_SIGNING_PRIVATE_KEY }}
+      #     SONATYPE_STAGING_PROFILE_ID: ${{ secrets.SONATYPE_STAGING_PROFILE_ID }}
+      #     MODULE_VERSION: ${{ steps.set-snapshot-version.outputs.VERSION }}
+      #     SNAPSHOT: true
 
       - name: Find old comment to update comment for
         uses: peter-evans/find-comment@v2
@@ -44,7 +44,7 @@ jobs:
           comment-author: 'github-actions[bot]'
           body-includes: Build available to test
 
-      - name: Inform pull request on build of SDK available to test 
+      - name: Inform pull request on build of SDK available to test
         uses: peter-evans/create-or-update-comment@v2
         with:
           comment-id: ${{ steps.find-previous-comment.outputs.comment-id }}
