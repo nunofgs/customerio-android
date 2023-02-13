@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
         // log events
 //        makeEventsRequests()
-
+// foobar
         // add custom attributes
         makeAddCustomDeviceAttributesRequest()
 
